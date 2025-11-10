@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="NewGarbageAndPeople.View.FileViewerPage"
+             Title="FileViewerPage">
+    <VerticalStackLayout>
+        <ListView ItemsSource="{Binding Files}" SelectedItem="{Binding SelectedFile}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <ViewCell.View>
+                            <HorizontalStackLayout>
+                                <HorizontalStackLayout.Resources>
+                                    <Style TargetType="Label">
+                                        <Setter Property="Margin" Value="5"/>
+                                    </Style>
+                                </HorizontalStackLayout.Resources>
+                                <Label Text="{Binding Title}"/>
+                                <Label Text="{Binding Extension}"/>
+                                <Label Text="{Binding DateOfCreating, StringFormat='Создан: dd.MM.yy HH:MM'}"/>
+                                <Label Text="{Binding DateOfLastChange, StringFormat='Последнее изменение: dd.MM.yy HH:MM'}"/>
+                            </HorizontalStackLayout>
+                        </ViewCell.View>
+                        <ViewCell.ContextActions>
+                            <MenuItem  Text="Удалить" Command="{Binding RemoveFileCommand, Source={StaticResource vm}}" CommandParameter="{Binding .}"/>
+                            <MenuItem Text="Изменить" Command="{Binding RedactFileCommand, Source={StaticResource vm}}" CommandParameter="{Binding .}"/>
+                        </ViewCell.ContextActions>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </VerticalStackLayout>
+</ContentPage>

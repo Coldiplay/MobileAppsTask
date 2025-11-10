@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="NewGarbageAndPeople.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:NewGarbageAndPeople"
+    xmlns:view="clr-namespace:NewGarbageAndPeople.View"
+    Title="NewGarbageAndPeople">
+
+
+    
+    
+    
+    
+    <TabBar>
+        <ShellContent
+        Title="Home"
+        ContentTemplate="{DataTemplate local:MainPage}"
+        Route="mainPage" />
+        <ShellContent
+        Title="Файлы"
+        ContentTemplate="{DataTemplate view:FileViewerPage}"
+        Route="fileViewerPage" />
+    </TabBar>   
+
+
+
+
+
+</Shell>
