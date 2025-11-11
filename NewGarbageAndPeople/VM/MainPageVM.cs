@@ -8,7 +8,7 @@ namespace NewGarbageAndPeople.VM
 {
     public class MainPageVM : BaseVM
     {
-        private readonly Database db = new();
+        private readonly Database db = Database.GetDatabase();
         private Owner? currentOwner;
         private ObservableCollection<Owner> owners;
         private List<Thing> things;

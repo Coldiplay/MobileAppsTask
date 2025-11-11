@@ -9,6 +9,8 @@
         <Label Text="Расширение файла"/>
         <Entry Text="{Binding File.Extension}"/>
         <Label Text=""/>
-        <Button Text="Обзор..." Command="{Binding}"/>
+        <Button Text="Обзор..." Command="{Binding GetPathToFileCommand}"/>
+
+        <Button Text="Добавить файл" Command="{Binding SaveFileCommand}"/>
     </VerticalStackLayout>
 </ContentPage>

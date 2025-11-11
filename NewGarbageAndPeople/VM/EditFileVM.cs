@@ -7,11 +7,13 @@ namespace NewGarbageAndPeople.VM
 {
     public class EditFileVM : BaseVM, IQueryAttributable
     {
-        private Database db;
+        private readonly Database db = Database.GetDatabase();
         public FileClass File { get; set; }
+
         private static string regex = @"^[\w\-. ]+$";
-        private string extension;
-        private string title;
+        private string extension = "";
+        private string title = "";
+        private string? pathToOrigFile;
 
         public string Title
         {
@@ -33,8 +35,18 @@ namespace NewGarbageAndPeople.VM
                 SaveFileCommand.ChangeCanExecute();
             }
         }
-        private string PathToOrigFile;
+        private string? PathToOrigFile
+        {
+            get => pathToOrigFile;
+            set
+            {
+                pathToOrigFile = value;
+                Signal();
+                SaveFileCommand.ChangeCanExecute();
+            }
+        }
         public Command SaveFileCommand { get; set; }
+        public Command GetPathToFileCommand { get; set; }
         public EditFileVM()
         {
             Initialize();
@@ -43,18 +55,30 @@ namespace NewGarbageAndPeople.VM
 
         private void Initialize()
         {
-            SaveFileCommand = new Command(() => 
+            SaveFileCommand = new Command(async () =>
             {
+                File.Title = Title;
+                File.ChangePath(PathToOrigFile + Extension);
+                await db.AddFile(File);
+                await Shell.Current.GoToAsync("..");
+            },
+            () => !string.IsNullOrEmpty(PathToOrigFile) && !string.IsNullOrEmpty(Extension) && !string.IsNullOrEmpty(Title));
+            //Regex.IsMatch(Title, regex) && Regex.IsMatch(Extension, regex) && !string.IsNullOrEmpty(PathToOrigFile));
 
-            }, () => Regex.IsMatch(Title, regex) && Regex.IsMatch(Extension, regex) && !string.IsNullOrEmpty(PathToOrigFile));
+            GetPathToFileCommand = new Command(async () =>
+            {
+                var fileGet = await FilePicker.PickAsync();
+                Title = fileGet?.FileName ?? "";
+                Extension = fileGet?.FileName ?? "";
+                PathToOrigFile = fileGet?.FullPath;
+            });
         }
 
 
         public void ApplyQueryAttributes(IDictionary<string, object> query)
         {
             query.TryGetValue("file", out var file);
-            File = (FileClass?)file ?? new FileClass("");
-            db = (Database)query["db"];
+            File = (FileClass?)file ?? new FileClass();
         }
     }
 }

@@ -4,15 +4,28 @@ namespace NewGarbageAndPeople.Models.DB
 {
     public class Database
     {
+        private static Database db;
+        private Database()
+        {
+            StartDb();
+        }
+        public static Database GetDatabase()
+        {
+            if (db is null)
+            {
+                db = new Database();
+            }
+            return db;
+        }
         private int incrementOwner;
         private int incrementThing;
         private int incrementFile;
-        public Database() 
-        {
-            StartDb();
-            //owners.Add(new Owner { Id = 0, FirstName = "Бесхозные вещи"});
-            //SaveOwnersAsync();
-        }
+        //public Database() 
+        //{
+        //    StartDb();
+        //    //owners.Add(new Owner { Id = 0, FirstName = "Бесхозные вещи"});
+        //    //SaveOwnersAsync();
+        //}
         private List<Owner> owners = new();
         private List<Thing> things = new();
         private List<FileClass> files = new();
@@ -238,7 +251,7 @@ namespace NewGarbageAndPeople.Models.DB
             {
                 file.Id = ++incrementFile;
                 File.Copy(file.Path, Path.Combine(FileSystem.Current.AppDataDirectory, newPath));
-                file.Path = newPath;
+                file.ChangePath(newPath);
             }
             else
             {
@@ -253,7 +266,7 @@ namespace NewGarbageAndPeople.Models.DB
                     }
                 }
                 fileToChange.Title = file.Title;
-                fileToChange.Path = file.Path;
+                fileToChange.ChangePath(file.Path);
             }
 
             files.Add(file);

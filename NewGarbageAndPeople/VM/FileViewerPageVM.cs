@@ -4,9 +4,9 @@ using NewGarbageAndPeople.VM.VMTools;
 
 namespace NewGarbageAndPeople.VM
 {
-    public class FileViewerPageVM : BaseVM, IQueryAttributable
+    public class FileViewerPageVM : BaseVM
     {
-        private Database db;
+        private readonly Database db = Database.GetDatabase();
         public List<FileClass> Files { get; set; }
 
 
@@ -23,6 +23,11 @@ namespace NewGarbageAndPeople.VM
 
         private void Initialize()
         {
+            AddFileCommand = new Command(async () =>
+            {
+                await Shell.Current.GoToAsync("Edit", new Dictionary<string, object> { { "file", new FileClass()} });
+            });
+
             RemoveFileCommand = new Command<FileClass>(async (file) => 
             {
                 await db.RemoveFile(file);
@@ -39,11 +44,6 @@ namespace NewGarbageAndPeople.VM
         public async void LoadFiles()
         {
             Files = await db.GetFilesAsync();
-        }
-
-        public void ApplyQueryAttributes(IDictionary<string, object> query)
-        {
-            db = (Database)query["db"];
         }
     }
 }

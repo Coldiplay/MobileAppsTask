@@ -9,6 +9,7 @@
             if (!ChangePath(path))
                 throw new ArgumentException($"Файла по пути {path} нет", nameof(path));
         }
+        public FileClass() { }
 
         public int Id { get; set; }
         public string Title { get; set; } = "";

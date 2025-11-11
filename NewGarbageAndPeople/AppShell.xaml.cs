@@ -11,7 +11,8 @@ namespace NewGarbageAndPeople
 
             Routing.RegisterRoute("editThing", typeof(EditThing));
             Routing.RegisterRoute("editOwner", typeof(EditOwner));
-            Routing.RegisterRoute("FileViewerPage/Edit", typeof(EditFile));
+            Routing.RegisterRoute("fileViewerPage", typeof(FileViewerPage));
+            Routing.RegisterRoute("fileViewerPage/Edit", typeof(EditFile));
         }
     }
 }
