@@ -65,7 +65,7 @@ namespace NewGarbageAndPeople.Models.DB
             {
                 using (var fs = new FileStream(Path.Combine(FileSystem.Current.AppDataDirectory, "files.json"), FileMode.Open))
                 {
-
+                    //var test = File.ReadAllText(Path.Combine(FileSystem.Current.AppDataDirectory, "files.json"));
                     files = await JsonSerializer.DeserializeAsync<List<FileClass>>(fs);
                     incrementFile = files.MaxBy(x => x.Id).Id;
                 }
@@ -243,33 +243,42 @@ namespace NewGarbageAndPeople.Models.DB
         }
         public async Task AddFile(FileClass file)
         {
-            if (!File.Exists(file.Path))
+            if (!File.Exists(file.Path) && !File.Exists(file.OriginalFilePath))
                 throw new ArgumentException($"Нет такого файла по пути {file.Path}", nameof(file.Path));
 
-            string newPath = $"Files/{file.Title}.{file.Extension}";
+            if (!string.IsNullOrEmpty(file.OriginalFilePath))
+                file.OriginalFilePath = Path.GetFullPath(file.OriginalFilePath);
+
+            string newPath = Path.Combine(FileSystem.Current.AppDataDirectory, $"Files/{file.Title}{file.Extension}");
+
             if (file.Id == 0)
             {
                 file.Id = ++incrementFile;
-                File.Copy(file.Path, Path.Combine(FileSystem.Current.AppDataDirectory, newPath));
+                //FileClass.MoveFile(file, newPath);
+                File.Copy(file.OriginalFilePath ?? file.Path, newPath, true);
+                file.OriginalFilePath = null;
                 file.ChangePath(newPath);
+                files.Add(file);
             }
             else
             {
                 var fileToChange = files.First(f => f.Id == file.Id);
+                file.OriginalFilePath = fileToChange.Path;
 
-                if (file.Path != fileToChange.Path)
-                {
-                    File.Copy(fileToChange.Path, Path.Combine(FileSystem.Current.AppDataDirectory, newPath));
+                if (file.Path != file.OriginalFilePath)
+                { 
+                    File.Copy(file.OriginalFilePath, newPath, true);
                     if (fileToChange.Path.Contains(Path.Combine(FileSystem.Current.AppDataDirectory, "Files/")))
                     {
                         File.Delete(fileToChange.Path);
                     }
                 }
                 fileToChange.Title = file.Title;
+                fileToChange.Extension = file.Extension;
+                fileToChange.OriginalFilePath = null;
                 fileToChange.ChangePath(file.Path);
             }
 
-            files.Add(file);
             await SaveFilesAsync();
         }
 

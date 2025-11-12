@@ -5,9 +5,9 @@
              Title="EditFile">
     <VerticalStackLayout>
         <Label Text="Название файла" />
-        <Entry Text="{Binding File.Title}"/>
+        <Entry Text="{Binding Title}"/>
         <Label Text="Расширение файла"/>
-        <Entry Text="{Binding File.Extension}"/>
+        <Entry Text="{Binding Extension}"/>
         <Label Text=""/>
         <Button Text="Обзор..." Command="{Binding GetPathToFileCommand}"/>
 

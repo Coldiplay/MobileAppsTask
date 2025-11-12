@@ -7,7 +7,17 @@ namespace NewGarbageAndPeople.VM
     public class FileViewerPageVM : BaseVM
     {
         private readonly Database db = Database.GetDatabase();
-        public List<FileClass> Files { get; set; }
+        private List<FileClass> files;
+
+        public List<FileClass> Files
+        {
+            get => files;
+            set
+            {
+                files = value;
+                Signal();
+            }
+        }
 
 
         public Command<FileClass> RemoveFileCommand { get; set; }
@@ -17,7 +27,6 @@ namespace NewGarbageAndPeople.VM
         public FileViewerPageVM()
         {
             Initialize();
-            
         }
 
 

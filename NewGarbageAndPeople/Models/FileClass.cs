@@ -1,8 +1,10 @@
-﻿namespace NewGarbageAndPeople.Models
+﻿using System.Text.Json.Serialization;
+
+namespace NewGarbageAndPeople.Models
 {
     public class FileClass
     {
-        private string path;
+        private string extension;
 
         public FileClass(string path)
         {
@@ -14,20 +16,51 @@
         public int Id { get; set; }
         public string Title { get; set; } = "";
 
-        public string Path => path;
+        public string Path { get; set; }
+        public string? OriginalFilePath { get; set; }
         public bool ChangePath(string path)
         {
             if (File.Exists(path))
             {
-                this.path = path;
+                Path = path;
                 return true;
             }
             return false; 
         }
 
 
-        public string Extension => System.IO.Path.GetExtension(this.Path);
+        public string Extension 
+        {
+            get 
+            {
+                return extension;
+            }
+            set 
+            {
+                extension = value;
+            }
+        }
+        [JsonIgnore]
         public DateTime DateOfCreating => File.GetCreationTime(Path);
+        [JsonIgnore]
         public DateTime DateOfLastChange => File.GetLastWriteTime(Path);
+
+
+        public static void MoveFile(FileClass file, string? pathToWhere = null)
+        {
+            if (pathToWhere is null)
+            {
+                pathToWhere = file.Path;
+                if (!System.IO.Path.IsPathFullyQualified(pathToWhere))
+                    throw new ArgumentException();
+            }
+
+            if (pathToWhere != file.OriginalFilePath)
+            {
+                if (File.Exists(pathToWhere))
+                    File.Delete(pathToWhere);
+                File.Copy(file.OriginalFilePath ?? file.Path, pathToWhere);
+            }
+        }
     }
 }

@@ -57,8 +57,10 @@ namespace NewGarbageAndPeople.VM
         {
             SaveFileCommand = new Command(async () =>
             {
+                //int index = Title.IndexOf('.');
                 File.Title = Title;
-                File.ChangePath(PathToOrigFile + Extension);
+                File.Extension = Extension;
+                File.OriginalFilePath = PathToOrigFile;
                 await db.AddFile(File);
                 await Shell.Current.GoToAsync("..");
             },
@@ -68,8 +70,8 @@ namespace NewGarbageAndPeople.VM
             GetPathToFileCommand = new Command(async () =>
             {
                 var fileGet = await FilePicker.PickAsync();
-                Title = fileGet?.FileName ?? "";
-                Extension = fileGet?.FileName ?? "";
+                Title = Path.GetFileNameWithoutExtension(fileGet?.FileName) ?? "";
+                Extension = Path.GetExtension(fileGet?.FileName) ?? "";
                 PathToOrigFile = fileGet?.FullPath;
             });
         }

@@ -4,22 +4,24 @@
              x:Class="NewGarbageAndPeople.View.FileViewerPage"
              Title="FileViewerPage">
     <VerticalStackLayout>
-        <ListView ItemsSource="{Binding Files}" SelectedItem="{Binding SelectedFile}">
+        <ListView ItemsSource="{Binding Files}" SelectedItem="{Binding SelectedFile}" HeightRequest="500">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
                         <ViewCell.View>
-                            <HorizontalStackLayout>
-                                <HorizontalStackLayout.Resources>
+                            <VerticalStackLayout>
+                                <VerticalStackLayout.Resources>
                                     <Style TargetType="Label">
                                         <Setter Property="Margin" Value="5"/>
                                     </Style>
-                                </HorizontalStackLayout.Resources>
-                                <Label Text="{Binding Title}"/>
-                                <Label Text="{Binding Extension}"/>
+                                </VerticalStackLayout.Resources>
+                                <HorizontalStackLayout>
+                                    <Label Text="{Binding Title}"/>
+                                    <Label Text="{Binding Extension}"/>
+                                </HorizontalStackLayout>
                                 <Label Text="{Binding DateOfCreating, StringFormat='Создан: dd.MM.yy HH:MM'}"/>
                                 <Label Text="{Binding DateOfLastChange, StringFormat='Последнее изменение: dd.MM.yy HH:MM'}"/>
-                            </HorizontalStackLayout>
+                            </VerticalStackLayout>
                         </ViewCell.View>
                         <ViewCell.ContextActions>
                             <MenuItem  Text="Удалить" Command="{Binding RemoveFileCommand, Source={StaticResource vm}}" CommandParameter="{Binding .}"/>
