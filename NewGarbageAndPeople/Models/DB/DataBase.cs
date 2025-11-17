@@ -310,5 +310,12 @@ namespace NewGarbageAndPeople.Models.DB
             files.Remove(file);
             await SaveFilesAsync();
         }
+
+
+        //Авторизация
+        public async Task<bool> LogIn(string username, string password)
+        {
+            return (username == "admin" && password == "123456");
+        }
     }
 }

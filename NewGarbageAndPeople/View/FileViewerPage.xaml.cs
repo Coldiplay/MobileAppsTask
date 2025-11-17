@@ -7,7 +7,7 @@ public partial class FileViewerPage : ContentPage
 	public FileViewerPage()
 	{
 		InitializeComponent();
-		BindingContext = new FileViewerPageVM();
+		//BindingContext = new FileViewerPageVM();
 	}
 
 

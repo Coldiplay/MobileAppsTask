@@ -41,7 +41,9 @@ namespace NewGarbageAndPeople.VM
             {
                 await db.RemoveFile(file);
                 Files = await db.GetFilesAsync();
-            }, (file) => file is not null);
+            }, 
+            (file) => 
+            file is not null);
 
             RedactFileCommand = new Command<FileClass>(async (file) =>
             {

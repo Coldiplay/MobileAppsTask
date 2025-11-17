@@ -5,23 +5,62 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:NewGarbageAndPeople"
     xmlns:view="clr-namespace:NewGarbageAndPeople.View"
-    Title="NewGarbageAndPeople">
+    Title="NewGarbageAndPeople"
+    BackgroundColor="Azure">
+
+    <!--<Shell.Resources>
+        <Style TargetType="Shell">
+            <Setter Property="BackgroundColor" Value="Yellow"/>
+        </Style>
+    </Shell.Resources>-->
+    <Shell.FlyoutHeaderTemplate>
+        <DataTemplate>
+            <Grid BackgroundColor="Black"
+                  HeightRequest="50">
+                <Label Text="Страницы"
+                       TextColor="White"
+                       FontAttributes="Bold"
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Center"
+                       FontSize="20"/>
+            </Grid>
+        </DataTemplate>
+    </Shell.FlyoutHeaderTemplate>
 
 
+
     
     
+    <Shell.FlyoutFooterTemplate>
+        <DataTemplate>
+            <StackLayout HeightRequest="100" BackgroundColor="Black">
+                
+            </StackLayout>
+        </DataTemplate>
+    </Shell.FlyoutFooterTemplate>
     
-    
-    <TabBar>
+
+    <FlyoutItem Title="Главная">
         <ShellContent
         Title="Home"
         ContentTemplate="{DataTemplate local:MainPage}"
-        Route="mainPage" />
+        Route="mainPage" >
+            <Shell>
+                <FlyoutItem Title="asdasds"/>
+                <FlyoutItem/>
+            </Shell>
+        </ShellContent>
+    </FlyoutItem>
+
+    <FlyoutItem Title="Файлы">
         <ShellContent
         Title="Файлы"
         ContentTemplate="{DataTemplate view:FileViewerPage}"
         Route="fileViewerPage" />
-    </TabBar>   
+    </FlyoutItem>
+    
+
+
 
 
 

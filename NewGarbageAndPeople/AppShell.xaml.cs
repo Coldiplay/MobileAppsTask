@@ -1,5 +1,4 @@
 ﻿using NewGarbageAndPeople.View;
-using NewGarbageAndPeople.VM;
 
 namespace NewGarbageAndPeople
 {
@@ -9,6 +8,7 @@ namespace NewGarbageAndPeople
         {
             InitializeComponent();
 
+            Routing.RegisterRoute("authorize", typeof(AuthorizePage));
             Routing.RegisterRoute("editThing", typeof(EditThing));
             Routing.RegisterRoute("editOwner", typeof(EditOwner));
             Routing.RegisterRoute("fileViewerPage", typeof(FileViewerPage));
