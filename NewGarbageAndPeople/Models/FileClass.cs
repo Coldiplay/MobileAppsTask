@@ -14,6 +14,7 @@ namespace NewGarbageAndPeople.Models
         public FileClass() { }
 
         public int Id { get; set; }
+        public int UserId { get; set; }
         public string Title { get; set; } = "";
 
         public string Path { get; set; }

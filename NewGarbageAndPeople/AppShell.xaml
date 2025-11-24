@@ -26,11 +26,6 @@
             </Grid>
         </DataTemplate>
     </Shell.FlyoutHeaderTemplate>
-
-
-
-    
-    
     <Shell.FlyoutFooterTemplate>
         <DataTemplate>
             <StackLayout HeightRequest="100" BackgroundColor="Black">
@@ -38,32 +33,35 @@
             </StackLayout>
         </DataTemplate>
     </Shell.FlyoutFooterTemplate>
-    
+
+
+    <TabBar>
+        <ShellContent 
+Title="Авторизация" 
+ContentTemplate="{DataTemplate view:AuthorizePage}" 
+Route="authorize"/>
+    </TabBar>
+
+    <TabBar>
+        <ShellContent 
+        Title="Регистрация" 
+        ContentTemplate="{DataTemplate view:RegistrationPage}" 
+        Route="registration"/>
+    </TabBar>
 
     <FlyoutItem Title="Главная">
         <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="mainPage" >
-            <Shell>
-                <FlyoutItem Title="asdasds"/>
-                <FlyoutItem/>
-            </Shell>
-        </ShellContent>
+            Title="Home"
+            ContentTemplate="{DataTemplate local:MainPage}"
+            Route="mainPage" />
     </FlyoutItem>
 
     <FlyoutItem Title="Файлы">
         <ShellContent
-        Title="Файлы"
-        ContentTemplate="{DataTemplate view:FileViewerPage}"
-        Route="fileViewerPage" />
+            Title="Файлы"
+            ContentTemplate="{DataTemplate view:FileViewerPage}"
+            Route="fileViewerPage" />
     </FlyoutItem>
+
     
-
-
-
-
-
-
-
 </Shell>

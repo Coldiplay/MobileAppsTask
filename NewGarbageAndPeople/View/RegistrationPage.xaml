@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="NewGarbageAndPeople.View.RegistrationPage"
+             xmlns:Ads="clr-namespace:NewGarbageAndPeople.View.ContentViews"
+              xmlns:vm="clr-namespace:NewGarbageAndPeople.VM"
+             Title="RegistrationPage"
+             BindingContext="{DynamicResource vm}">
+    <ContentPage.Resources>
+        <vm:RegistrationPageVM x:Key="vm"/>
+    </ContentPage.Resources>
+    <VerticalStackLayout>
+        <Label 
+    Text="Регистрация"
+    VerticalOptions="Center" 
+    HorizontalOptions="Center" />
+        <Label Text="Логин"/>
+        <Entry Text="{Binding Login}"/>
+        <Label Text="Пароль"/>
+        <Entry IsPassword="True" Text="{Binding Password}"/>
+        <Button Text="Зарегистрироваться" Command="{Binding RegistrationCommand}"/>
+
+
+
+        <Ads:AD HeightRequest="200" WidthRequest="200" Margin="160"/>
+
+    </VerticalStackLayout>
+</ContentPage>

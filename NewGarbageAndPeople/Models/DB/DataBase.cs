@@ -7,19 +7,16 @@ namespace NewGarbageAndPeople.Models.DB
         private static Database db;
         private Database()
         {
-            StartDb();
         }
         public static Database GetDatabase()
         {
-            if (db is null)
-            {
-                db = new Database();
-            }
+            db ??= new Database();
             return db;
         }
         private int incrementOwner;
         private int incrementThing;
         private int incrementFile;
+        private int incrementUser;
         //public Database() 
         //{
         //    StartDb();
@@ -29,6 +26,22 @@ namespace NewGarbageAndPeople.Models.DB
         private List<Owner> owners = new();
         private List<Thing> things = new();
         private List<FileClass> files = new();
+        private List<User> users = [];
+        private User loggedUser;
+
+        public async Task LoadUsers()
+        {
+            try
+            {
+                using (var fs = new FileStream(Path.Combine(FileSystem.Current.AppDataDirectory, "users.json"), FileMode.Open))
+                    users = await JsonSerializer.DeserializeAsync<List<User>>(fs);
+                incrementUser = users.Max(u => u.Id);
+            }
+            catch (Exception ex)
+            {
+                users = [new User { Id = 0, Name = "admin", Password = "root"}];
+            }
+        }
 
         public async void StartDb()
         {
@@ -37,8 +50,8 @@ namespace NewGarbageAndPeople.Models.DB
                 using (var fs = new FileStream(Path.Combine(FileSystem.Current.AppDataDirectory, "owners.json"), FileMode.Open))
                 {
                     //throw new Exception();
-                    owners = JsonSerializer.Deserialize<List<Owner>>(fs);
-                    incrementOwner = owners.MaxBy(x => x.Id).Id;
+                    owners = [.. (await JsonSerializer.DeserializeAsync<List<Owner>>(fs)).Where(o => o.UserId == loggedUser.Id)];
+                    incrementOwner = owners.Max(x => x.Id);
                 }
             }
             catch (Exception e)
@@ -51,8 +64,8 @@ namespace NewGarbageAndPeople.Models.DB
                 using (var fs = new FileStream(Path.Combine(FileSystem.Current.AppDataDirectory, "things.json"), FileMode.Open))
                 {
                     
-                    things = await JsonSerializer.DeserializeAsync<List<Thing>>(fs);
-                    incrementThing = things.MaxBy(x => x.Id).Id;
+                    things = [..(await JsonSerializer.DeserializeAsync<List<Thing>>(fs)).Where(t => t.UserId == loggedUser.Id)];
+                    incrementThing = things.Max(x => x.Id);
                 }
 
             }
@@ -66,8 +79,8 @@ namespace NewGarbageAndPeople.Models.DB
                 using (var fs = new FileStream(Path.Combine(FileSystem.Current.AppDataDirectory, "files.json"), FileMode.Open))
                 {
                     //var test = File.ReadAllText(Path.Combine(FileSystem.Current.AppDataDirectory, "files.json"));
-                    files = await JsonSerializer.DeserializeAsync<List<FileClass>>(fs);
-                    incrementFile = files.MaxBy(x => x.Id).Id;
+                    files = [..(await JsonSerializer.DeserializeAsync<List<FileClass>>(fs)).Where(f => f.UserId == loggedUser.Id)];
+                    incrementFile = files.Max(x => x.Id);
                 }
             }
             catch (Exception e)
@@ -82,11 +95,12 @@ namespace NewGarbageAndPeople.Models.DB
                 owner?.Things.Add(things[i]);
             }
 
-
             //AddOwner(new Owner() { FirstName = "asdasd", LastName = "sdfsd", Email = "asdasd@gmail.com", PhoneNumber = "+12345678901" });
             //AddOwner(new Owner() { FirstName = "vbnmvbn", LastName = "xcbv", Email = "asdasd@gmail.com", PhoneNumber = "+12345678901" });
-
         }
+
+        public string GetUserName() => loggedUser.Name;
+
 
 
         // Получение списка
@@ -315,7 +329,39 @@ namespace NewGarbageAndPeople.Models.DB
         //Авторизация
         public async Task<bool> LogIn(string username, string password)
         {
-            return (username == "admin" && password == "123456");
+            var user = users.FirstOrDefault(u => u.Name.Equals(username, StringComparison.CurrentCultureIgnoreCase) && u.Password.Equals(password, StringComparison.CurrentCultureIgnoreCase));
+            if (user is not null)
+            {
+                loggedUser = user;
+                StartDb();
+                return true;
+            }
+            return false;
+        }
+
+        public async Task<bool> CheckDublicate(string username) => users.Any(u => username == u.Name);
+
+        public async Task AddNewLoginPassword(string username, string password)
+        {
+            User newuser = new User();
+            newuser.Name = username;
+            newuser.Password = password;
+            users.Add(newuser);
+            await LoadfileLofinPassword();
+        }
+
+        public async Task<bool> LoadfileLofinPassword()
+        {
+            try
+            {
+                using (var fs = new FileStream(Path.Combine(FileSystem.Current.AppDataDirectory, "users.json"), FileMode.Create))
+                    await JsonSerializer.SerializeAsync<List<User>>(fs, users);
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

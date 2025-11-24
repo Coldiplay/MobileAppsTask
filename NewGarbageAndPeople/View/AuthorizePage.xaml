@@ -3,10 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="NewGarbageAndPeople.View.AuthorizePage"
              xmlns:vm="clr-namespace:NewGarbageAndPeople.VM"
+             xmlns:contentviews="clr-namespace:NewGarbageAndPeople.View.ContentViews"
              Title="AuthorizePage"
-             BindingContext="{DynamicResource vm}">
+             BindingContext="{DynamicResource vm1}">
     <ContentPage.Resources>
-        <vm:AuthorizePageVM x:Key="vm"/>
+        <vm:AuthorizePageVM x:Key="vm1"/>
     </ContentPage.Resources>
     <VerticalStackLayout>
         <Label 
@@ -17,8 +18,10 @@
         <Entry Text="{Binding Login}"/>
         <Label Text="Пароль"/>
         <Entry IsPassword="True" Text="{Binding Password}"/>
-        <Button Text="Авторизоваться"/>
+        <Button Text="Авторизоваться" Command="{Binding AuthorizeCommand}"/>
 
-        <Button Text="Регистрация"></Button>
+        <Button Text="Регистрация" Command="{Binding OpenRegistrationPageCommand}"/>
+        <!--<Button Clicked="Button_Clicked"/>-->
+        <contentviews:AD Margin="130" HeightRequest="200" WidthRequest="200"/>
     </VerticalStackLayout>
 </ContentPage>

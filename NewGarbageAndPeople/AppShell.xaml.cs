@@ -8,7 +8,7 @@ namespace NewGarbageAndPeople
         {
             InitializeComponent();
 
-            Routing.RegisterRoute("authorize", typeof(AuthorizePage));
+            //Routing.RegisterRoute("authorize", typeof(AuthorizePage));
             Routing.RegisterRoute("editThing", typeof(EditThing));
             Routing.RegisterRoute("editOwner", typeof(EditOwner));
             Routing.RegisterRoute("fileViewerPage", typeof(FileViewerPage));
