@@ -11,6 +11,7 @@ namespace NewGarbageAndPeople.Models
         public string Email { get; set; } = "";
         public string PhoneNumber { get; set; } = "";
 
+        [JsonIgnore]
         public string FL => $"{FirstName} {LastName}";
 
         [JsonIgnore]

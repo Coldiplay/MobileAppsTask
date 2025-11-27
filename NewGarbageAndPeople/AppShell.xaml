@@ -8,11 +8,7 @@
     Title="NewGarbageAndPeople"
     BackgroundColor="Azure">
 
-    <!--<Shell.Resources>
-        <Style TargetType="Shell">
-            <Setter Property="BackgroundColor" Value="Yellow"/>
-        </Style>
-    </Shell.Resources>-->
+
     <Shell.FlyoutHeaderTemplate>
         <DataTemplate>
             <Grid BackgroundColor="Black"
@@ -37,9 +33,9 @@
 
     <TabBar>
         <ShellContent 
-Title="Авторизация" 
-ContentTemplate="{DataTemplate view:AuthorizePage}" 
-Route="authorize"/>
+        Title="Авторизация" 
+        ContentTemplate="{DataTemplate view:AuthorizePage}" 
+        Route="authorize"/>
     </TabBar>
 
     <TabBar>

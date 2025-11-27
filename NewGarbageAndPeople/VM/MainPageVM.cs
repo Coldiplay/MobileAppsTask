@@ -85,6 +85,7 @@ namespace NewGarbageAndPeople.VM
                 //await page.Navigation.PushAsync(new EditThing(new Thing(), db));
                 await Shell.Current.GoToAsync("editThing", new Dictionary<string, object> {{"db", db}});
             }, () => true);
+
             CreateOwner = new Command(async () =>
             {
                 await Shell.Current.GoToAsync("editOwner", new Dictionary<string, object> {{ "db", db } });

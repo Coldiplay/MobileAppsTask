@@ -39,12 +39,8 @@ namespace NewGarbageAndPeople.VM
         public RegistrationPageVM()
         {
             AD = new AD();
-            Initialize();
-        }
 
-        private async Task Initialize()
-        {
-            await db.LoadUsers();
+            Initialize();
 
             RegistrationCommand = new Command(async () =>
             {
@@ -55,12 +51,19 @@ namespace NewGarbageAndPeople.VM
 
                 else
                 {
-                    
+
                     await Shell.Current.DisplayAlert("Регистрация", "Вы успешно зарегистрировались", "Ok");
                     await db.AddNewLoginPassword(Login, Password);
                     await Shell.Current.GoToAsync("//authorize");
                 }
             }, () => !string.IsNullOrEmpty(Login.Trim()) && !string.IsNullOrEmpty(Password.Trim()));
+        }
+
+        private async void Initialize()
+        {
+            await db.LoadUsers();
+
+            
         }
     }
 }
